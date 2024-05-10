@@ -1,62 +1,29 @@
 #!/usr/bin/python3
+"""
+UTF-8 Validation.
+"""
+
 
 def validUTF8(data):
-    """This Function Checks if a list of integers are valid UTF-8 codepoints."""
-    skip = 0
-    n = len(data)
-    for i in range(n):
-        if skip > 0:
-            skip -= 1
-            continue
-        if type(data[i]) != int or data[i] < 0 or data[i] > 0x10FFFF:
-            return False
-        elif data[i] <= 0x7F:
-            skip = 0
-        elif data[i] & 0b11111000 == 0b11110000:
-            # 4-byte utf-8 character encoding
-            span = 4
-            if n - i >= span:
-                next_body = list(
-                    map(
-                        lambda x: x & 0b11000000 == 0b10000000,
-                        data[i + 1 : i + span],
-                    )
-                )
-                if not all(next_body):
-                    return False
-                skip = span - 1
-            else:
-                return False
-        elif data[i] & 0b11110000 == 0b11100000:
-            # 3-byte utf-8 character encoding
-            span = 3
-            if n - i >= span:
-                next_body = list(
-                    map(
-                        lambda x: x & 0b11000000 == 0b10000000,
-                        data[i + 1 : i + span],
-                    )
-                )
-                if not all(next_body):
-                    return False
-                skip = span - 1
-            else:
-                return False
-        elif data[i] & 0b11100000 == 0b11000000:
-            # 2-byte utf-8 character encoding
-            span = 2
-            if n - i >= span:
-                next_body = list(
-                    map(
-                        lambda x: x & 0b11000000 == 0b10000000,
-                        data[i + 1 : i + span],
-                    )
-                )
-                if not all(next_body):
-                    return False
-                skip = span - 1
-            else:
+    """
+    this Function list of integers
+    Return: True if data is a valid UTF-8
+    encoding, else return False.
+    """
+    loc = 0
+
+    for ind in data:
+        if loc == 0:
+            if ind >> 5 == 0b110 or ind >> 5 == 0b1110:
+                loc = 1
+            elif ind >> 4 == 0b1110:
+                loc = 2
+            elif ind >> 3 == 0b11110:
+                loc = 3
+            elif ind >> 7 == 0b1:
                 return False
         else:
-            return False
-    return True
+            if ind >> 6 != 0b10:
+                return False
+            loc -= 1
+    return loc == 0
