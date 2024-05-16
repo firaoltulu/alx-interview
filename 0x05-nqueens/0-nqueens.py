@@ -12,7 +12,7 @@ pos = None
 
 
 def get_input():
-    """This Function Retrieves and validates this program's argument.
+    """Retrieves and validates this program's argument.
     """
     global n
     n = 0
@@ -31,7 +31,7 @@ def get_input():
 
 
 def is_attacking(pos0, pos1):
-    """This Function Checks if the positions of two queens are in an attacking mode.
+    """Checks if the positions of two queens are in an attacking mode.
     """
     if (pos0[0] == pos1[0]) or (pos0[1] == pos1[1]):
         return True
@@ -39,7 +39,7 @@ def is_attacking(pos0, pos1):
 
 
 def group_exists(group):
-    """This Function Checks if a group exists in the list of solutions.
+    """Checks if a group exists in the list of solutions.
     """
     global solutions
     for stn in solutions:
@@ -54,7 +54,7 @@ def group_exists(group):
 
 
 def build_solution(row, group):
-    """This Function Builds a solution for the n queens problem.
+    """Builds a solution for the n queens problem.
     """
     global solutions
     global n
@@ -74,7 +74,7 @@ def build_solution(row, group):
 
 
 def get_solutions():
-    """This Function Gets the solutions for the given chessboard size."""
+    """Gets the solutions for the given chessboard size."""
     global pos, n
     pos = list(map(lambda x: [x // n, x % n], range(n**2)))
     a = 0
